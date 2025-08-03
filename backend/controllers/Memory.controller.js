@@ -1,4 +1,6 @@
 const Memory = require('../models/Memory.model.js')
+const mongoose = require('mongoose')
+
 
 // mongoose methods find(), findById(), findByIdAndUpdate(), deleteOne(), remove()
 
@@ -12,7 +14,7 @@ const getMemory = async(req, res) => {
 
         res.status(200).json(getMemo)
     } catch (error) {
-        console.log("Couldn't return any memory", err)
+        console.log("Couldn't return any memory", error)
     }
 }
 
@@ -26,9 +28,12 @@ const createMemory = async(req, res) => {
             console.log("There is no data")
         }
 
-        const createMemo = await Memory.create(data)
+        const newMemory = new Memory(data)
+        await newMemory.save()
 
-        res.status(200).json(createMemo)
+        // const createMemo = await Memory.create({ data })
+
+        res.status(200).json(newMemory)
         
     } catch (error) {
         console.log("Couldn't create a memory, Try again!")
@@ -53,6 +58,7 @@ const updateMemory = async(req, res) => {
 }
 
 const deleteMemory = async(req, res) => {
+
     try {
         const deleteMemo = await Memory.findById(req.params.id) // find specific memory to delete
 
@@ -61,7 +67,8 @@ const deleteMemory = async(req, res) => {
             console.log("No memory was found!")
         }
 
-        await deleteMemo.remove() // if found, then remove it 
+        await deleteMemo.deleteOne() // if found, then remove it 
+        res.status(200).json({message: "Memory has been deleted successfully!"})
     } catch (error) {
         console.log("Couldn't delete memory, Try again!")
     }

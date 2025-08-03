@@ -6,7 +6,10 @@ const PORT = process.env.PORT || 5000
 
 const app = express()
 
+app.use(express.json()) // middleware to parse json request 
+app.use(express.urlencoded({extended: false}))
+
 connectDB()
-app.use('/memory', require('./routes/Memory.routes.js'))
+app.use('/api/memory', require('./routes/Memory.routes.js'))
 
 app.listen(PORT, () => console.log(`Server starts on port ${PORT}`))
