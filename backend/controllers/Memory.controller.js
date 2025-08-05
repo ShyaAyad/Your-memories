@@ -60,11 +60,16 @@ const updateMemory = async(req, res) => {
 const deleteMemory = async(req, res) => {
 
     try {
-        const deleteMemo = await Memory.findById(req.params.id) // find specific memory to delete
+
+        // id comes from the frontend and we search in mongoDB collections to delete it
+        const { id } = req.params;
+        const objectId = new mongoose.Types.ObjectId(id) // why do this? because sometimes mongo id and the one coming from frontend mismatch (String & ObjectId)
+        const deleteMemo = await Memory.findById(objectId) // find specific memory to delete
+        console.log(objectId)
+        console.log(deleteMemo)
 
         if(!deleteMemo){
-            res.status(404)
-            console.log("No memory was found!")
+            return res.status(404).json({message: "No memory was found!"})
         }
 
         await deleteMemo.deleteOne() // if found, then remove it 
