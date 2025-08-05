@@ -1,7 +1,6 @@
 const Memory = require('../models/Memory.model.js')
 const mongoose = require('mongoose')
 
-
 // mongoose methods find(), findById(), findByIdAndUpdate(), deleteOne(), remove()
 
 const getMemory = async(req, res) => {
@@ -21,14 +20,18 @@ const getMemory = async(req, res) => {
 const createMemory = async(req, res) => {
     try {
 
-        const data = req.body; // getting the body data to create the memory with later
+        const memoryData = {
+            ...req.body, // getting all the data
+            image: req.file?.path || '' // also the path of the image if there is one
+        }
+        // const data = req.body; // getting the body data to create the memory with later
 
-        if(!data){
+        if(!memoryData){
             res.status(400)
             console.log("There is no data")
         }
 
-        const newMemory = new Memory(data)
+        const newMemory = new Memory(memoryData)
         await newMemory.save()
 
         // const createMemo = await Memory.create({ data })
@@ -65,6 +68,8 @@ const deleteMemory = async(req, res) => {
         const { id } = req.params;
         const objectId = new mongoose.Types.ObjectId(id) // why do this? because sometimes mongo id and the one coming from frontend mismatch (String & ObjectId)
         const deleteMemo = await Memory.findById(objectId) // find specific memory to delete
+
+        // const deleteMemo = await Memory.findByIdAndDelete(req.params.id)  // works at some cases but safer to use the above approach
         console.log(objectId)
         console.log(deleteMemo)
 

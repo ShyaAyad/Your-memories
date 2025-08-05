@@ -23,7 +23,7 @@ export const useCreatePost = create((set) => ({
     }
   },
 
-  createPost: async (newMemory) => {
+  createMemory: async (newMemory) => {
     try {
       const newPost = await api.createAMemory(newMemory); // send put request to the backend
       const responseData = newPost.data; // Axios always returns a response object
@@ -35,7 +35,11 @@ export const useCreatePost = create((set) => ({
 
   updateMemory: async (memoryId) => {
     try {
-      // const update = await api.updateAMemory(postId)
+
+      // send request to backend for editing
+      const update = await api.updateAMemory(memoryId)
+
+      set(() => ({posts: [...posts, update]}))
     } catch (error) {}
   },
 
