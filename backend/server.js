@@ -12,7 +12,7 @@ app.use(express.json()) // middleware to parse json request
 app.use(express.urlencoded({extended: false}))
 
 connectDB()
-app.use('/images', express.static('public/images'));
+app.use('/images', express.static('./public/images'));
 app.use('/api/memory', require('./routes/Memory.routes.js'))
 
 app.listen(PORT, () => console.log(`Server starts on port ${PORT}`))

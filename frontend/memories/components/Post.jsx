@@ -43,7 +43,7 @@ const Post = () => {
               </svg>
             </Button>
           </div>
-          <Image src={profilePic} alt="Memory image" />
+          <Image src={`http://localhost:8000/${post.image}`} alt="Memory image" />
           <Title level={1}>{post.title}</Title>
           <Title level={3}>{post.description}</Title>
           <Title level={4}>{post.tags}</Title>

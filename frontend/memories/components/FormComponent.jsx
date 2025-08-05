@@ -1,5 +1,6 @@
 import { Button, Form, Input, Typography, Upload } from "antd";
 import { useCreatePost } from "../Store/post.store";
+import axios from "axios";
 
 const { Title } = Typography;
 
@@ -8,9 +9,28 @@ const FormComponent = () => {
   const [form] = Form.useForm(); // hook provided by Ant design
 
   // Ant design automatically prevents form submission and the values is the data being returned from the form after filling it
-  const handleSubmit = (values) => {
-    createMemory(values); // send values (which is an object) to the createPost function in zustand file
-    form.resetFields(); // clear form after submission
+  const handleSubmit = async (values) => {
+    console.log(values);
+    console.log(values.title);
+
+    // values.image is an array of files (fileList)
+    const fileList = values.image || [];
+    const file = fileList.length > 0 ? fileList[0].originFileObj : null;
+
+    console.log("Extracted file:", file);
+
+    const formData = new FormData();
+    formData.append("creator", values.creator);
+    formData.append("title", values.title);
+    formData.append("description", values.description || "");
+    formData.append("tags", values.tags || "");
+
+    if (file) {
+      formData.append("image", file);
+    }
+
+    createMemory(formData);
+    form.resetFields();
   };
 
   return (
@@ -46,24 +66,24 @@ const FormComponent = () => {
 
         <Form.Item
           name="image"
-          valuePropName="file"
-          getValueFromEvent={(e) => e.file.originFileObj} // just get the File object
+          valuePropName="fileList" // <-- change here to fileList (array)
+          getValueFromEvent={(e) => {
+            if (Array.isArray(e)) {
+              return e;
+            }
+            return e?.fileList || [];
+          }}
         >
           <Upload
-            listType="picture"
-            beforeUpload={() => false} // prevent automatic upload
+            beforeUpload={() => false} // prevent auto upload
             maxCount={1}
             accept="image/*"
+            listType="picture"
           >
             <Button>Upload Image</Button>
           </Upload>
         </Form.Item>
-        {/* <Form.Item>
 
-          to upload image later
-          
-          <Upload />
-        </Form.Item> */}
         <Button
           htmlType="submit"
           size="large"

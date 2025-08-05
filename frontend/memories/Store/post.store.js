@@ -8,6 +8,8 @@ export const useCreatePost = create((set) => ({
     try {
       const res = await api.getAllPostsData();
       const data = res.data; // get the data from the response object which looks like this
+
+      console.log(data)
     /* {
             data: ...,       // we want this which has (title, creator, description...etc)
             status: 200,

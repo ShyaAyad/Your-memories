@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const getMemory = async(req, res) => {
     try {
         const getMemo = await Memory.find()
-
+        
         if(!getMemo){
             res.status(404).json({message: "No memory was found!"})
         }
