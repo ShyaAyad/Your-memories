@@ -12,7 +12,8 @@ app.use(express.json()) // middleware to parse json request
 app.use(express.urlencoded({extended: false}))
 
 connectDB()
-app.use('/public', express.static('public')); // this means get access to everything inside of the public folder 
-app.use('/api/memory', require('./routes/Memory.routes.js'))
+app.use('/public', express.static('public')); // this means get access to everything inside of the public folder (it holds the uploaded images)
+app.use('/api/memory', require('./routes/Memory.routes.js')) // memory routes
+app.use('/api/auth', require('./routes/auth.routes.js')) // auth routes
 
 app.listen(PORT, () => console.log(`Server starts on port ${PORT}`))

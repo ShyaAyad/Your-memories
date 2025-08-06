@@ -27,7 +27,7 @@ const FormComponent = () => {
       console.log("there is no tag for this post");
     } else {
       // edge case: remove leading spaces in each string, and don't set empty strings as tags just return the array that holds string values
-      const tagsArray = tags.split(",").map(tag => tag.trim()).filter(tag => tag !== " ");
+      const tagsArray = tags.split(",").map(tag => tag.trim()).filter(tag => tag !== "");
       formData.append("tags", JSON.stringify(tagsArray) || "");
     }
 

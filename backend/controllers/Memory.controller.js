@@ -50,7 +50,6 @@ const updateMemory = async (req, res) => {
     }
 
     const objectId = new mongoose.Types.ObjectId(id);
-    console.log(objectId);
     const updateMemo = await Memory.findById(objectId); // finding the specific memory to be updated
 
     if (!updateMemo) {
