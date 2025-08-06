@@ -2,6 +2,7 @@ import { useCreatePost } from "../Store/post.store";
 import { Avatar, Button, Typography, Image } from "antd";
 import profilePic from "../src/assets/userLogo.jpg";
 import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -9,7 +10,7 @@ const Post = () => {
   const posts = useCreatePost((state) => state.posts);
   const getMemories = useCreatePost((state) => state.getAllMemories);
   const deleteMemory = useCreatePost((state) => state.deleteMemory);
-  const updateMemory = useCreatePost((state) => state.updateMemory)
+  const navigate = useNavigate();
 
   // to get all the memories we already have in the database on mount
   useEffect(() => {
@@ -31,7 +32,7 @@ const Post = () => {
             </div>
 
             {/* send id to zustan function to update post  */}
-            <Button onClick={() => updateMemory(post._id)}>
+            <Button onClick={() => navigate(`/edit-memory/${post._id}`)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"

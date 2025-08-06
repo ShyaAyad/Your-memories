@@ -27,7 +27,7 @@ export const useCreatePost = create((set) => ({
 
   createMemory: async (newMemory) => {
     try {
-      const newPost = await api.createAMemory(newMemory); // send put request to the backend
+      const newPost = await api.createAMemory(newMemory); // send put request to the backend with the form data
       const responseData = newPost.data; // Axios always returns a response object
       set((state) => ({ posts: [...state.posts, responseData] })); // updating zustand function
     } catch (error) {
@@ -35,14 +35,20 @@ export const useCreatePost = create((set) => ({
     }
   },
 
-  updateMemory: async (memoryId) => {
+  updateMemory: async (memoryId, data) => {
     try {
 
       // send request to backend for editing
-      const update = await api.updateAMemory(memoryId)
+      const update = await api.updateAMemory(memoryId, data)
 
-      set(() => ({posts: [...posts, update]}))
-    } catch (error) {}
+      set((state) => ({
+        posts: state.posts.map((post) => 
+          post._id === memoryId? {...post, ...update.data } : post
+        )
+      }))
+    } catch (error) {
+      console.log("Couldn't edit post, try again", error)
+    }
   },
 
   deleteMemory: async (memoryId) => {

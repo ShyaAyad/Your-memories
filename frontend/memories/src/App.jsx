@@ -4,6 +4,7 @@ import Login from "../pages/Login";
 import Navbar from "../components/Navbar";
 import Form from '../components/FormComponent'
 import SignUp from "../pages/SignUp";
+import EditMemory from "../components/editMemory";
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/add-post' element={<Form />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/add-post' element={<Form />} />
+        <Route path='/edit-memory/:memoryId' element={<EditMemory/>} /> 
       </Routes>
     </>
   );

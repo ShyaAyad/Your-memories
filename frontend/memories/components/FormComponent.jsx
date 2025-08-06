@@ -11,26 +11,33 @@ const FormComponent = () => {
   // Ant design automatically prevents form submission and the values is the data being returned from the form after filling it
   const handleSubmit = async (values) => {
     console.log(values);
-    console.log(values.title);
 
     // values.image is an array of files (fileList)
     const fileList = values.image || [];
     const file = fileList.length > 0 ? fileList[0].originFileObj : null;
 
-    console.log("Extracted file:", file);
-
     const formData = new FormData();
     formData.append("creator", values.creator);
     formData.append("title", values.title);
     formData.append("description", values.description || "");
-    formData.append("tags", values.tags || "");
 
+    // splitting the strings by comma and add them to the array
+    const tags = values.tags;
+    if (!tags) {
+      console.log("there is no tag for this post");
+    } else {
+      // edge case: remove leading spaces in each string, and don't set empty strings as tags just return the array that holds string values
+      const tagsArray = tags.split(",").map(tag => tag.trim()).filter(tag => tag !== " ");
+      formData.append("tags", JSON.stringify(tagsArray) || "");
+    }
+
+    // first check if there is a file if true append it to the formData
     if (file) {
       formData.append("image", file);
     }
 
-    createMemory(formData);
-    form.resetFields();
+    createMemory(formData); // send form data to createMemory in zustand
+    form.resetFields(); // clear the form
   };
 
   return (
@@ -65,7 +72,7 @@ const FormComponent = () => {
         </Form.Item>
 
         <Form.Item
-          name="image"
+          name="image" // this must match the name you pass to the .single() in the backend
           valuePropName="fileList" // <-- change here to fileList (array)
           getValueFromEvent={(e) => {
             if (Array.isArray(e)) {
@@ -76,11 +83,11 @@ const FormComponent = () => {
         >
           <Upload
             beforeUpload={() => false} // prevent auto upload
-            maxCount={1}
-            accept="image/*"
-            listType="picture"
+            maxCount={1} // number of uploaded file (only one is accepted here)
+            accept="image/*" // so only images are accepts (.jpg, .png...etc)
+            listType="picture-card"
           >
-            <Button>Upload Image</Button>
+            + Upload
           </Upload>
         </Form.Item>
 
@@ -94,7 +101,7 @@ const FormComponent = () => {
             border: "1px solid black",
           }}
         >
-          Make post
+          Make memory
         </Button>
       </Form>
     </div>

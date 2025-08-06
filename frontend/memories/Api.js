@@ -4,10 +4,10 @@ import axios from "axios"
 const url = "http://localhost:8000/api/memory"
 
 export const getAllPostsData = async() => await axios.get(url)
-export const createAMemory = async(newMemory) =>  await axios.post(url, newMemory)
+export const createAMemory = async(newMemory) =>  await axios.post(url, newMemory) // accept form data and send request to the backend to create a memory 
 
 // acception the id and sending it to the backend to edit it 
-export const updateAMemory = async(memoryId) => await axios.put(`http://localhost:8000/api/memory/${memoryId}`)
+export const updateAMemory = async(memoryId, data) => await axios.put(`http://localhost:8000/api/memory/${memoryId}`, data)
 
 // acception the id and sending it to the backend to delete it 
 export const deleteAMemory = async(memoryId) =>  await axios.delete(`http://localhost:8000/api/memory/${memoryId}`) 
