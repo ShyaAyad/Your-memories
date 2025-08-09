@@ -6,7 +6,13 @@ const logIn = async(req, res) => {
 }
 
 const signUp = async(req, res) => {
-    console.log("sign up") 
+    const { username, email, password } = req.body;
+    try {
+        const newUser = await Auth.create({ username, email, password });
+        res.status(201).json({message: "User created successfully", data: newUser})
+    } catch (error) {
+        console.log("Failed to create a new user", error)
+    }
 }
 
 const createUser = async(req, res) => {

@@ -1,6 +1,7 @@
 import { Button, Form, Input, Typography, Upload } from "antd";
 import { useCreatePost } from "../Store/post.store";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -101,7 +102,7 @@ const FormComponent = () => {
             border: "1px solid black",
           }}
         >
-          Make memory
+          <Link to="/">Make memory</Link>
         </Button>
       </Form>
     </div>

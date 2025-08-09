@@ -1,13 +1,26 @@
 import { Button, Form, Input, Typography } from "antd"
 import { Link } from "react-router-dom"
+import { useUserAccount } from "../Store/user.store"
 
 const { Title } = Typography
 
 const SignUp = () => {
+
+  const signUp = useUserAccount(state => state.signUp);
+
+  const handleSignUp = (values) => {
+    console.log("User created successfully")
+    console.log(values, ' user data')
+    console.log(values.username)
+    console.log(values.email)
+    console.log(values.password)
+    signUp(values)
+  }
+
   return (
     <div className="flex flex-col items-center justify-center mt-20">
       <Title level={1}>Sign up</Title>
-        <Form horizental="true" variant="filled" className="flex flex-col w-full max-w-[250px] sm:max-w-[450px]">
+        <Form onFinish={handleSignUp} horizental="true" variant="filled" className="flex flex-col w-full max-w-[250px] sm:max-w-[450px]">
             <Form.Item className="m-20 w-full">
               <Title level={4}>UserName: </Title>
               <Input placeholder="John Doe"/>
@@ -21,7 +34,7 @@ const SignUp = () => {
               <Input.Password placeholder="password"/>
             </Form.Item>
             {/* add an onClick that navigates user to main page after registering */}
-            <Button>Register</Button> 
+            <Button htmlType="submit">Register</Button> 
             <Title level={5} className='flex  justify-center mt-5 gap-2'>
               Already have an account? 
               <div className='underline'>

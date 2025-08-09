@@ -11,3 +11,5 @@ export const updateAMemory = async(memoryId, data) => await axios.put(`http://lo
 
 // acception the id and sending it to the backend to delete it 
 export const deleteAMemory = async(memoryId) =>  await axios.delete(`http://localhost:8000/api/memory/${memoryId}`) 
+
+export const signUp = async(data) => await axios.post(`http://localhost:8000/api/auth/signup`, data) // send data to backend to create user
