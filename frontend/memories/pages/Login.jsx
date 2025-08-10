@@ -28,7 +28,9 @@ const Login = () => {
           <Input.Password placeholder="password" />
         </Form.Item>
         {/* add an onClick that navigates user to the main page after logging in */}
-        <Button htmlType="submit">Login</Button>
+        <Button htmlType="submit">
+          <Link to="/">Login</Link>
+        </Button>
         <Title level={5} className="flex  justify-center mt-5 gap-2">
           Don't have an account?
           <div className="underline">

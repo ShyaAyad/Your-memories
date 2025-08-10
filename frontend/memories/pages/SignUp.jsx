@@ -45,7 +45,9 @@ const SignUp = () => {
           <Input.Password placeholder="password" />
         </Form.Item>
         {/* add an onClick that navigates user to main page after registering */}
-        <Button htmlType="submit">Register</Button>
+        <Button htmlType="submit">
+          <Link to="/">Register</Link>
+        </Button>
         <Title level={5} className="flex  justify-center mt-5 gap-2">
           Already have an account?
           <div className="underline">
