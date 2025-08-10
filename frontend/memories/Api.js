@@ -12,4 +12,4 @@ export const deleteAMemory = async(memoryId) =>  await axios.delete(`http://loca
 
 // authentication requests to the backend
 export const signUp = async(data) => await axios.post(`http://localhost:8000/api/auth/signup`, data) // send data to backend to create user
-export const logIn = async(data) => await axios.get(`http://localhost:8000/api/auth/login`, data)
+export const logIn = async(data) => await axios.post(`http://localhost:8000/api/auth/login`, data) // send data to backend to find user with the information 

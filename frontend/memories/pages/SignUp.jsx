@@ -15,18 +15,33 @@ const SignUp = () => {
     <div className="flex flex-col items-center justify-center mt-20">
       <Title level={1}>Sign up</Title>
       <Form
+        autoComplete="off"
         onFinish={handleSignUp}
-        horizental="true"
+        layout="vertical"
         variant="filled"
         className="flex flex-col w-full max-w-[250px] sm:max-w-[450px]"
       >
-        <Form.Item label="username" name="username" className="m-20 w-full">
+        <Form.Item
+          label="username"
+          name="username"
+          rules={[{ required: true, message: "Please enter username" }]}
+          className="m-20 w-full"
+        >
           <Input placeholder="John Doe" />
         </Form.Item>
-        <Form.Item label="email" name="email" className="m-20 w-full">
+        <Form.Item
+          label="email"
+          name="email"
+          rules={[{ required: true, message: "Please enter your email" }]}
+          className="m-20 w-full"
+        >
           <Input placeholder="example@gmail.com" />
         </Form.Item>
-        <Form.Item label="password" name="password">
+        <Form.Item
+          label="password"
+          name="password"
+          rules={[{ required: true, message: "Please enter your password" }]}
+        >
           <Input.Password placeholder="password" />
         </Form.Item>
         {/* add an onClick that navigates user to main page after registering */}

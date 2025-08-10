@@ -45,6 +45,7 @@ const FormComponent = () => {
     <div className="flex flex-col items-center justify-center mt-20">
       <Title level={2}>Make a memory</Title>
       <Form
+        autoComplete="off"
         form={form}
         onFinish={handleSubmit}
         variant="filled"

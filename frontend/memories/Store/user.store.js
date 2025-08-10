@@ -7,7 +7,6 @@ export const useUserAccount = create((set) => ({
     try {
       const newUser = await api.signUp(data);
       const newUserData = newUser.data.data;
-      console.log(newUserData);
       set({ user: newUserData });
     } catch (error) {
       console.log("Failed to create user, please try again");
@@ -17,7 +16,6 @@ export const useUserAccount = create((set) => ({
         try {
             const existingUser = await api.logIn(data);
             const userData = existingUser.data.data
-            console.log(userData)
             set({user: userData})
         } catch (error) {
             console.log("Failed to login, try logging in again!")
