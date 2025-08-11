@@ -73,8 +73,6 @@ const deleteMemory = async (req, res) => {
     const deleteMemo = await Memory.findById(objectId); // find specific memory to delete
 
     // const deleteMemo = await Memory.findByIdAndDelete(req.params.id)  // works at some cases but safer to use the above approach
-    console.log(objectId);
-    console.log(deleteMemo);
 
     if (!deleteMemo) {
       return res.status(404).json({ message: "No memory was found!" });

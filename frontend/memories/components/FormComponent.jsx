@@ -1,13 +1,16 @@
 import { Button, Form, Input, Typography, Upload } from "antd";
 import { useCreatePost } from "../Store/post.store";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useUserAccount } from "../Store/user.store";
+import SignUp from "../pages/SignUp";
 
 const { Title } = Typography;
 
 const FormComponent = () => {
   const createMemory = useCreatePost((state) => state.createMemory);
   const [form] = Form.useForm(); // hook provided by Ant design
+  const user = useUserAccount((state) => state.user);
+  console.log(user);
 
   // Ant design automatically prevents form submission and the values is the data being returned from the form after filling it
   const handleSubmit = async (values) => {
@@ -28,7 +31,10 @@ const FormComponent = () => {
       console.log("there is no tag for this post");
     } else {
       // edge case: remove leading spaces in each string, and don't set empty strings as tags just return the array that holds string values
-      const tagsArray = tags.split(",").map(tag => tag.trim()).filter(tag => tag !== "");
+      const tagsArray = tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== "");
       formData.append("tags", JSON.stringify(tagsArray) || "");
     }
 
@@ -40,6 +46,16 @@ const FormComponent = () => {
     createMemory(formData); // send form data to createMemory in zustand
     form.resetFields(); // clear the form
   };
+
+  
+  if(!user){
+    return(
+      <>
+        <h1 className="flex items-center justify-center text-3xl mt-10 text-red-700">Create an account to make memories</h1>
+        <SignUp />
+      </>
+    )
+  }
 
   return (
     <div className="flex flex-col items-center justify-center mt-20">

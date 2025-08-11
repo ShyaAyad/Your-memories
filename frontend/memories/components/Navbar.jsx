@@ -1,8 +1,16 @@
-import { Avatar, Flex, Dropdown, Button } from "antd";
+import { Avatar, Flex, Dropdown, Button, Typography } from "antd";
 import userLogo from "../src/assets/userLogo.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserAccount } from "../Store/user.store";
 
 const Navbar = () => {
+  const logOut = useUserAccount((state) => state.logOut)
+
+  const handleLogOut = () => {
+    logOut();
+    navigate('/')
+  }
+
   const items = [
     { key: "account", label: "Account" },
     { key: "create", label: "Add post" },
@@ -31,10 +39,13 @@ const Navbar = () => {
             <Avatar src={userLogo} alt="Avatar img" size={64} />
           </Link>
         </div>
-        <div className="flex items-center justify-center pr-5">
+        <div className="flex items-center justify-center pr-5 gap-5">
           <Dropdown menu={{ items, onClick: handleClick }}>
             <Button>Open me</Button>
           </Dropdown>
+          <Button onClick={handleLogOut}>
+            <Link to='/'>Log out</Link>
+          </Button>
         </div>
       </Flex>
     </div>
