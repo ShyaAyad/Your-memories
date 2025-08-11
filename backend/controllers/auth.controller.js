@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken");
 const cookie = require("cookie-parser");
 
 const expiryDate = 3 * 24 * 60 * 60; // global expiryDate to be accessed in any function
-const userToken = (id) => { // create token for user with specific id
+const userToken = (id) => {
+  // create token for user with specific id
   return jwt.sign({ id }, "myJWT", {
     expiresIn: expiryDate,
   });
-
 };
 
 const logIn = async (req, res) => {
@@ -29,13 +29,16 @@ const logIn = async (req, res) => {
         .json({ message: "Incorrect password, Try again!" });
     }
 
-    // call the function that creates the token 
-    const token = userToken(existingUser._id)
+    // call the function that creates the token
+    const token = userToken(existingUser._id);
 
     res.cookie("jwt", token, { httpOnly: true, maxAge: expiryDate * 1000 });
+
+    // you must rename password or else you will get reference error
+    const { password: hashed, ...userDataWithoutPassword } = existingUser._doc
     res
       .status(201)
-      .json({ message: "Logged in successfully", data: existingUser });
+      .json({ message: "Logged in successfully", data: userDataWithoutPassword });
   } catch (error) {
     console.log("Failed to login, please try again!");
   }
@@ -56,14 +59,16 @@ const signUp = async (req, res) => {
       password: hashedPassword,
     });
 
-    const token = userToken(newUser._id)
-    console.log(token)
+    const token = userToken(newUser._id);
 
-    res.cookie('jwt', token, {maxAge: expiryDate * 1000 })
+    res.cookie("jwt", token, { maxAge: expiryDate * 1000 });
+
+    // for better security send the users data without the password
+    const { password: hashed, ...userWithoutPassword } = newUser._doc;
+
     res
       .status(201)
-      .json({ message: "User created successfully", data: newUser });
-    console.log(newUser);
+      .json({ message: "User created successfully", data: userWithoutPassword });
   } catch (error) {
     console.log("Failed to create a new user", error);
   }

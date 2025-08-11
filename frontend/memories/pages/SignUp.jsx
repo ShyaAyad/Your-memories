@@ -1,14 +1,24 @@
-import { Button, Form, Input, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Form, Input, message, Typography } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserAccount } from "../Store/user.store";
 
 const { Title } = Typography;
 
 const SignUp = () => {
   const signUp = useUserAccount((state) => state.signUp);
+  const navigate = useNavigate()
 
   const handleSignUp = async (values) => {
-    signUp(values);
+    const success = await signUp(values);
+    try {
+      if(success){
+      navigate('/')
+    }else{
+      console.log("Failed to sign up, Try again!")
+    }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -32,7 +42,10 @@ const SignUp = () => {
         <Form.Item
           label="email"
           name="email"
-          rules={[{ required: true, message: "Please enter your email" }]}
+          rules={[{ required: true, message: "Please enter your email" },{
+            type: "email",
+            message: "Please enter a valide email"
+          }]}
           className="m-20 w-full"
         >
           <Input placeholder="example@gmail.com" />
@@ -40,13 +53,16 @@ const SignUp = () => {
         <Form.Item
           label="password"
           name="password"
-          rules={[{ required: true, message: "Please enter your password" }]}
+          rules={[{ required: true, message: "Please enter your password" }, {
+            type: "password",
+            message: "Password should conatine at least 6 characters"
+          }]}
         >
           <Input.Password placeholder="password" />
         </Form.Item>
         {/* add an onClick that navigates user to main page after registering */}
         <Button htmlType="submit">
-          <Link to="/">Register</Link>
+          Register
         </Button>
         <Title level={5} className="flex  justify-center mt-5 gap-2">
           Already have an account?
