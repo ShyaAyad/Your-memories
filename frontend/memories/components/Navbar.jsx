@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const handleLogOut = () => {
     logOut();
-    navigate('/')
+    navigate('/no-account')
   }
 
   const items = [

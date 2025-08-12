@@ -1,23 +1,25 @@
-const express = require('express')
-const dontenv = require('dotenv').config()
-const cors = require('cors')
-const { connectDB } = require('./config/db.js')
-const cookieParser = require('cookie-parser')
-const PORT = process.env.PORT || 5000
+const express = require("express");
+const dontenv = require("dotenv").config();
+const cors = require("cors");
+const { connectDB } = require("./config/db.js");
+const cookieParser = require("cookie-parser");
+const PORT = process.env.PORT || 5000;
 
-const app = express()
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}));
-app.use(cookieParser())
+const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true, // This is crucial!
+    optionsSuccessStatus: 200,
+  })
+);
+app.use(cookieParser());
 
-app.use(express.json()) // middleware to parse json request 
-app.use(express.urlencoded({extended: false}))
+app.use(express.json()); // middleware to parse json request
+app.use(express.urlencoded({ extended: false }));
 
-connectDB()
-app.use('/public', express.static('public')); // this means get access to everything inside of the public folder (it holds the uploaded images)
-app.use('/api/memory', require('./routes/Memory.routes.js')) // memory routes
-app.use('/api/auth', require('./routes/auth.routes.js')) // auth routes
-
-app.listen(PORT, () => console.log(`Server starts on port ${PORT}`))
+connectDB();
+app.use("/public", express.static("public")); // this means get access to everything inside of the public folder (it holds the uploaded images)
+app.use("/api/memory", require("./routes/Memory.routes.js")); // memory routes
+app.use("/api/auth", require("./routes/auth.routes.js")); // auth routes
+app.listen(PORT, () => console.log(`Server starts on port ${PORT}`));

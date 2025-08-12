@@ -2,7 +2,8 @@ import { useCreatePost } from "../Store/post.store";
 import { Avatar, Button, Typography, Image } from "antd";
 import profilePic from "../src/assets/userLogo.jpg";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useUserAccount } from "../Store/user.store";
 
 const { Title } = Typography;
 
@@ -10,6 +11,7 @@ const Post = () => {
   const posts = useCreatePost((state) => state.posts);
   const getMemories = useCreatePost((state) => state.getAllMemories);
   const deleteMemory = useCreatePost((state) => state.deleteMemory);
+  const user = useUserAccount((state) => state.user);
   const navigate = useNavigate();
 
   // to get all the memories we already have in the database on mount
@@ -32,27 +34,36 @@ const Post = () => {
             </div>
 
             {/* send id to zustan function to update post  */}
-            <Button onClick={() => navigate(`/edit-memory/${post._id}`)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="black"
-              >
-                <path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z" />
-              </svg>
-            </Button>
+            {/* only users with accounts can edit memories */}
+            {user ? (
+              <Button onClick={() => navigate(`/edit-memory/${post._id}`)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="black"
+                >
+                  <path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z" />
+                </svg>
+              </Button>
+            ) : null}
           </div>
-          <Image src={`http://localhost:8000/${post.image}`} alt="Memory image" />
+          <Image
+            src={`http://localhost:8000/${post.image}`}
+            alt="Memory image"
+          />
           <Title level={1}>{post.title}</Title>
           <Title level={3}>{post.description}</Title>
           <Title level={4}>{post.tags}</Title>
           <div>
             {/* pass correct id to delete */}
-            <Button onClick={() => deleteMemory(post._id)}>
-              Delete memory
-            </Button>
+            {/* so that only user with account can deleete memories  */}
+            {user ? (
+              <Button onClick={() => deleteMemory(post._id)}>
+                Delete memory
+              </Button>
+            ) : null}
           </div>
         </div>
       ))}

@@ -1,22 +1,24 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 const protectedRoute = (req, res, next) => {
-    const token = req.cookies.jwt
-    console.log("THE TOKEN IS: ", token)
-    
-    if(token){
-        jwt.verify(token, "myJWT", (err, decodedToken) => {
-            if(err){
-                console.log(err.message)
-                res.redirect('/signup')
-            }else{
-                console.log(decodedToken)
-                next()
-            }
-        })
-    }else{
-        res.redirect('/signup')
-    }
-}
+  console.log("Request headers:", req.headers.cookie); // See if any cookies are sent
+  console.log("All cookies:", req.cookies);
 
-module.exports = { protectedRoute }
+  const token = req.cookies.jwt;
+
+  if (token) {
+    jwt.verify(token, "myJWT", (err, decodedToken) => {
+      if (err) {
+        console.log(err.message);
+        return res.status(401).json({ message: "Authentication required" });
+      } else {
+        console.log(decodedToken);
+        next();
+      }
+    });
+  } else {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+};
+
+module.exports = { protectedRoute };

@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Form from '../components/FormComponent'
 import SignUp from "../pages/SignUp";
 import EditMemory from "../components/editMemory";
+import NoAccount from "../components/NoAccount";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/add-post' element={<Form />} />
+        <Route path='/no-account' element={<NoAccount />} />
         <Route path='/edit-memory/:memoryId' element={<EditMemory/>} /> 
       </Routes>
     </>

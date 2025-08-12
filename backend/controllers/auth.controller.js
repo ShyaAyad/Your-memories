@@ -32,16 +32,23 @@ const logIn = async (req, res) => {
     // call the function that creates the token
     const token = userToken(existingUser._id);
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: expiryDate * 1000 });
+    // console.log("Headers: ", res.getHeaders()) // only for debugging
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: false, // Required for localhost (http://)
+      sameSite: "lax", // Helps with cross-origin requests
+      maxAge: expiryDate * 1000,
+    });
+
+    //  console.log("Headers AFTER cookie:", res.getHeaders()); // only for debugging
 
     // you must rename password or else you will get reference error
     const { password: hashed, ...userDataWithoutPassword } = existingUser._doc;
-    res
-      .status(201)
-      .json({
-        message: "Logged in successfully",
-        data: userDataWithoutPassword,
-      });
+    res.status(201).json({
+      message: "Logged in successfully",
+      data: userDataWithoutPassword,
+    });
   } catch (error) {
     console.log("Failed to login, please try again!");
   }
@@ -64,25 +71,28 @@ const signUp = async (req, res) => {
 
     const token = userToken(newUser._id);
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: expiryDate * 1000 });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: false, // Required for localhost (http://)
+      sameSite: "lax", // Helps with cross-origin requests
+      maxAge: expiryDate * 1000,
+    });
 
     // for better security send the users data without the password
     const { password: hashed, ...userWithoutPassword } = newUser._doc;
 
-    res
-      .status(201)
-      .json({
-        message: "User created successfully",
-        data: userWithoutPassword,
-      });
+    res.status(201).json({
+      message: "User created successfully",
+      data: userWithoutPassword,
+    });
   } catch (error) {
     console.log("Failed to create a new user", error);
   }
 };
 
-const logOut = async(req, res) => {
+const logOut = async (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
-  res.status(200).json({message: "Logged out successfully"})
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 module.exports = {

@@ -27,6 +27,9 @@ export const useCreatePost = create((set) => ({
     try {
       const newPost = await api.createAMemory(newMemory); // send put request to the backend with the form data
       const responseData = newPost.data; // Axios always returns a response object
+
+      console.log(responseData)
+      
       set((state) => ({ posts: [...state.posts, responseData] })); // updating zustand function
     } catch (error) {
       console.log("Failed to create memory, Try again!");
