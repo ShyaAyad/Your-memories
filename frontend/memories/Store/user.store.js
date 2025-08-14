@@ -32,7 +32,7 @@ export const useUserAccount = create((set) => ({
   logOut: async () => {
     try {
       const logout = await api.logOut();
-      console.log(logout);
+
       set({user: null}) // set user to null when user logs out
     } catch (error) {
       console.log(error)

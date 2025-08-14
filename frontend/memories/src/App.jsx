@@ -6,6 +6,7 @@ import Form from '../components/FormComponent'
 import SignUp from "../pages/SignUp";
 import EditMemory from "../components/editMemory";
 import NoAccount from "../components/NoAccount";
+import UserAccount from "../components/UserAccount";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
     <Navbar />
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path='/user-account' element={<UserAccount />} />
         <Route path="/login" element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/add-post' element={<Form />} />

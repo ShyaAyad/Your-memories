@@ -1,6 +1,6 @@
 import { Button, Form, Input, Typography, Upload } from "antd";
 import { useCreatePost } from "../Store/post.store";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUserAccount } from "../Store/user.store";
 import SignUp from "../pages/SignUp";
 
@@ -10,6 +10,7 @@ const FormComponent = () => {
   const createMemory = useCreatePost((state) => state.createMemory);
   const [form] = Form.useForm(); // hook provided by Ant design
   const user = useUserAccount((state) => state.user);
+  const navigate = useNavigate();
 
   // Ant design automatically prevents form submission and the values is the data being returned from the form after filling it
   const handleSubmit = async (values) => {
@@ -45,6 +46,7 @@ const FormComponent = () => {
 
     console.log(formData)
     createMemory(formData); // send form data to createMemory in zustand
+    navigate('/')
     form.resetFields(); // clear the form
   };
 
@@ -120,7 +122,7 @@ const FormComponent = () => {
             border: "1px solid black",
           }}
         >
-          <Link to="/">Make memory</Link>
+          Make memory
         </Button>
       </Form>
     </div>

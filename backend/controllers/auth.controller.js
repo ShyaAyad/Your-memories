@@ -91,8 +91,12 @@ const signUp = async (req, res) => {
 };
 
 const logOut = async (req, res) => {
-  res.cookie("jwt", "", { maxAge: 1 });
-  res.status(200).json({ message: "Logged out successfully" });
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    sameSite: "strict",
+    expires: new Date(0),
+  });
+  return res.status(200).json({ message: "Logged out successfully" });
 };
 
 module.exports = {
