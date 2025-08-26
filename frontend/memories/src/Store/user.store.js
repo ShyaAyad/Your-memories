@@ -1,8 +1,7 @@
 import { create } from "zustand";
-import * as api from "../Api.js";
+import * as api from "../../Api.js";
 
 export const useUserAccount = create((set) => ({
-  // JSON.parse(localStorage.getItem("user")) ||
   user: JSON.parse(localStorage.getItem("user")) || null, // initally we have no user
   signUp: async (data) => {
     try {
@@ -22,7 +21,7 @@ export const useUserAccount = create((set) => ({
       const userData = existingUser.data.data;
       set({ user: userData });
       localStorage.setItem('user', JSON.stringify(userData))
-      console.log(userData);
+      
       return true; // if not using this return statement then user won't be redirected to homepage after successfully logging in
     } catch (error) {
       console.log("Failed to login, try logging in again!");

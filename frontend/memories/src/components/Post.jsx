@@ -1,9 +1,8 @@
-import { useCreatePost } from "../Store/post.store";
+import { useCreatePost } from "/src/Store/post.store.js";
 import { Avatar, Button, Typography, Image } from "antd";
-import profilePic from "../src/assets/userLogo.jpg";
+import profilePic from "/src/assets/userLogo.jpg";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUserAccount } from "../Store/user.store";
+import { useUserAccount } from "/src/Store/user.store";
 
 const { Title } = Typography;
 

@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import Main from "../pages/Main";
-import Login from "../pages/Login";
-import Navbar from "../components/Navbar";
-import Form from '../components/FormComponent'
-import SignUp from "../pages/SignUp";
-import EditMemory from "../components/editMemory";
-import NoAccount from "../components/NoAccount";
-import UserAccount from "../components/UserAccount";
+import Main from "/src/pages/Main";
+import Login from "/src/pages/Login";
+import Navbar from "/src/components/Navbar";
+import Form from '/src/components/FormComponent'
+import SignUp from "/src/pages/SignUp";
+import EditMemory from "/src/components/editMemory";
+import NoAccount from "/src/components/NoAccount";
+import UserAccount from "/src/components/UserAccount";
 
 function App() {
   return (

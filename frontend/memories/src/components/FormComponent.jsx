@@ -14,7 +14,6 @@ const FormComponent = () => {
 
   // Ant design automatically prevents form submission and the values is the data being returned from the form after filling it
   const handleSubmit = async (values) => {
-    console.log(values);
 
     // values.image is an array of files (fileList)
     const fileList = values.image || [];
@@ -43,8 +42,6 @@ const FormComponent = () => {
       formData.append("image", file);
     }
 
-
-    console.log(formData)
     createMemory(formData); // send form data to createMemory in zustand
     navigate('/')
     form.resetFields(); // clear the form

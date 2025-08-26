@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const protectedRoute = (req, res, next) => {
-  console.log("Request headers:", req.headers.cookie); // See if any cookies are sent
-  console.log("All cookies:", req.cookies);
+  // console.log("Request headers:", req.headers.cookie); 
+  // console.log("All cookies:", req.cookies);
 
   const token = req.cookies.jwt;
 

@@ -1,4 +1,4 @@
-import animation from '../Login.json'
+import animation from '/Login.json'
 import Lottie from 'lottie-react'
 
 const LogoutAnimation = () => {

@@ -1,5 +1,5 @@
 import { Avatar, Flex, Dropdown, Button, Typography } from "antd";
-import userLogo from "../src/assets/userLogo.jpg";
+import userLogo from "/src/assets/userLogo.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAccount } from "../Store/user.store";
 import { LogoutOutlined } from "@ant-design/icons";

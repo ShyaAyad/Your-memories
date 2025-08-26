@@ -1,9 +1,9 @@
 import { HomeOutlined, MessageOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useUserAccount } from "../Store/user.store";
+import { useUserAccount } from "/src/Store/user.store";
 import { Typography } from "antd";
 import Lottie from "lottie-react";
-import NoAccountInfo from '../NoDataFound.json'
+import NoAccountInfo from '/NoDataFound.json'
 
 const UserAccount = () => {
   const user = useUserAccount((state) => state.user);
