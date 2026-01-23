@@ -1,68 +1,82 @@
 import { create } from "zustand";
-import * as api from "../../Api.js"; // importing everything from the API file
+import * as api from "../../Api.js";
 
-// zustands create function
+// Zustand create function
 export const useCreatePost = create((set) => ({
   posts: [], // initial state of posts is an empty array
+  loading: false,
+  error: null,
+
   getAllMemories: async () => {
+    set({ loading: true, error: null });
     try {
       const res = await api.getAllPostsData();
-      const data = res.data; // get the data from the response object which looks like this
-    /* {
-            data: ...,       // we want this which has (title, creator, description...etc)
-            status: 200,
-            statusText: 'OK',
-            headers: { ... },
-            config: { ... },
-            request: { ... }
-        } 
-    */
-      set(() => ({ posts: data }));
+      const data = res.data;
+      
+      // Ensure data is an array
+      const postsArray = Array.isArray(data) ? data : [];
+      
+      set({ posts: postsArray, loading: false });
     } catch (error) {
-      console.log("No memory was found!", error);
+      console.error("No memory was found!", error);
+      set({ posts: [], loading: false, error: error.message });
     }
   },
 
   createMemory: async (newMemory) => {
+    set({ error: null });
     try {
-      const newPost = await api.createAMemory(newMemory); // send put request to the backend with the form data
-      const responseData = newPost.data; // Axios always returns a response object
+      const newPost = await api.createAMemory(newMemory);
+      const responseData = newPost.data;
       
-      set((state) => ({ posts: [...state.posts, responseData] })); // updating zustand function
+      set((state) => ({ 
+        posts: [...state.posts, responseData],
+        error: null 
+      }));
+      
+      return { success: true, data: responseData };
     } catch (error) {
-      console.log("Failed to create memory, Try again!");
+      console.error("Failed to create memory, Try again!", error);
+      set({ error: error.message });
+      return { success: false, error: error.message };
     }
   },
 
   updateMemory: async (memoryId, data) => {
+    set({ error: null });
     try {
-
-      // send request to backend for editing
-      const update = await api.updateAMemory(memoryId, data)
-
+      const update = await api.updateAMemory(memoryId, data);
+      
       set((state) => ({
         posts: state.posts.map((post) => 
-          post._id === memoryId? {...post, ...update.data } : post
-        )
-      }))
+          post._id === memoryId ? { ...post, ...update.data } : post
+        ),
+        error: null
+      }));
+      
+      return { success: true, data: update.data };
     } catch (error) {
-      console.log("Couldn't edit post, try again", error)
+      console.error("Couldn't edit post, try again", error);
+      set({ error: error.message });
+      return { success: false, error: error.message };
     }
   },
 
   deleteMemory: async (memoryId) => {
+    set({ error: null });
     try {
-      const deletePostData = await api.deleteAMemory(memoryId); // passing the id of the memory to be deleted to the API call 
-
-      if (!deletePostData) {
-        console.log("Couldn't find memory, please try again!");
-      }
-
+      await api.deleteAMemory(memoryId);
+      
       set((state) => ({
         posts: state.posts.filter((post) => post._id !== memoryId),
+        error: null
       }));
+      
+      return { success: true };
     } catch (error) {
-      console.log("Can't delete memory, Try again!");
+      console.error("Can't delete memory, Try again!", error);
+      set({ error: error.message });
+      return { success: false, error: error.message };
     }
   },
 }));

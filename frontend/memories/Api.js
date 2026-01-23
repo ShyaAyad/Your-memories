@@ -1,16 +1,39 @@
-// this is a global API fetching for a cleaner code 
-import axios from "axios"
+// Api.js - Fixed version
+import axios from "axios";
 
-const url = "http://localhost:8000/api/memory"
+// Use environment variable or default to port 5000
+// const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-export const getAllPostsData = async() => await axios.get(url)
-export const createAMemory = async(newMemory) =>  await axios.post(`http://localhost:8000/api/memory`, newMemory, { withCredentials: true }) // accept form data and send request to the backend to create a memory 
-// acception the id and sending it to the backend to edit it 
-export const updateAMemory = async(memoryId, data) => await axios.put(`http://localhost:8000/api/memory/${memoryId}`, data)
-// acception the id and sending it to the backend to delete it 
-export const deleteAMemory = async(memoryId) =>  await axios.delete(`http://localhost:8000/api/memory/${memoryId}`, { withCredentials: true }) // only logged in users can delete posts
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: `http://localhost:8000`,
+  withCredentials: true, // Enable credentials for all requests
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+});
 
-// authentication requests to the backend
-export const signUp = async(data) => await axios.post(`http://localhost:8000/api/auth/signup`, data) // send data to backend to create user
-export const logIn = async(data) => await axios.post(`http://localhost:8000/api/auth/login`, data, { withCredentials: true }) // send data to backend to find user with the information 
-export const logOut = async() => await axios.get(`http://localhost:8000/api/auth/logout`) // request to log user out
+// Memory/Post endpoints
+export const getAllPostsData = async () => 
+  await api.get("/api/memory");
+
+export const createAMemory = async (newMemory) => 
+  await api.post("/api/memory", newMemory);
+
+export const updateAMemory = async (memoryId, data) => 
+  await api.put(`/api/memory/${memoryId}`, data);
+
+export const deleteAMemory = async (memoryId) => 
+  await api.delete(`/api/memory/${memoryId}`);
+
+// Authentication endpoints
+export const signUp = async (data) => 
+  await api.post("/api/auth/signup", data);
+
+export const logIn = async (data) => 
+  await api.post("/api/auth/login", data);
+
+export const logOut = async () => 
+  await api.get("/api/auth/logout");
+
+export default api;

@@ -3,6 +3,7 @@ import { Avatar, Button, Typography, Image } from "antd";
 import profilePic from "/src/assets/userLogo.jpg";
 import { useEffect } from "react";
 import { useUserAccount } from "/src/Store/user.store";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -11,6 +12,7 @@ const Post = () => {
   const getMemories = useCreatePost((state) => state.getAllMemories);
   const deleteMemory = useCreatePost((state) => state.deleteMemory);
   const user = useUserAccount((state) => state.user);
+  const navigate = useNavigate();
 
   // to get all the memories we already have in the database on mount
   useEffect(() => {
@@ -33,7 +35,7 @@ const Post = () => {
 
             {/* send id to zustan function to update post  */}
             {/* only users with accounts can edit memories */}
-            {/* {user ? (
+            {user && post.owner?.toString() === user._id ? (
               <Button onClick={() => navigate(`/edit-memory/${post._id}`)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -44,8 +46,9 @@ const Post = () => {
                 >
                   <path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z" />
                 </svg>
+                edit
               </Button>
-            ) : null} */}
+            ) : null}
           </div>
           <Image
             src={`http://localhost:8000/${post.image}`}
@@ -56,8 +59,8 @@ const Post = () => {
           <Title level={4}>{post.tags}</Title>
           <div>
             {/* pass correct id to delete */}
-            {/* so that only user with account can deleete memories  */}
-            {user ? (
+            {/* only owner of the post can delete their posts  */}
+            {user && post.owner?.toString() === user._id  ? (
               <Button onClick={() => deleteMemory(post._id)}>
                 Delete memory
               </Button>

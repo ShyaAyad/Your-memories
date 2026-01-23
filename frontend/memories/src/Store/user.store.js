@@ -1,18 +1,20 @@
 import { create } from "zustand";
 import * as api from "../../Api.js";
 
+const storedUser = localStorage.getItem("user");
+
 export const useUserAccount = create((set) => ({
-  user: JSON.parse(localStorage.getItem("user")) || null, // initally we have no user
+  user: storedUser ? JSON.parse(storedUser) : null,
   signUp: async (data) => {
     try {
       const newUser = await api.signUp(data);
       const newUserData = newUser.data.data;
       set({ user: newUserData });
-      localStorage.setItem('user', JSON.stringify(newUserData)) // store user in local storage to still have user after refreshing
-      return true; // if not using this return statement then user won't be redirected to homepage after successfully registering
+      localStorage.setItem("user", JSON.stringify(newUserData));
+      return true;
     } catch (error) {
       console.log("Failed to create user, please try again");
-      return false; // couldn't register
+      return false;
     }
   },
   logIn: async (data) => {
@@ -20,24 +22,22 @@ export const useUserAccount = create((set) => ({
       const existingUser = await api.logIn(data);
       const userData = existingUser.data.data;
       set({ user: userData });
-      localStorage.setItem('user', JSON.stringify(userData))
-      
-      return true; // if not using this return statement then user won't be redirected to homepage after successfully logging in
+      localStorage.setItem("user", JSON.stringify(userData));
+      return true;
     } catch (error) {
       console.log("Failed to login, try logging in again!");
-      return false; // couldn't login
+      return false;
     }
   },
   logOut: async () => {
     try {
-      const logout = await api.logOut();
-
-      set({user: null}) // set user to null when user logs out
+      await api.logOut();
+      localStorage.removeItem("user");
     } catch (error) {
-      console.log(error)
-      console.log("Failed to log out, please try again!")
-
-      set({user: null}) 
+      console.log("Failed to log out, please try again!");
+    } finally {
+      set({ user: null });
+      localStorage.removeItem("user"); // IMPORTANT
     }
   },
 }));
