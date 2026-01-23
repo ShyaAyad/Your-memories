@@ -75,4 +75,4 @@ Make sure both servers are running simultaneously.
 
 ## 📸 Screenshots
 ### Login Page
-![Login page}(screenshots/login.png)
+![Login page](screenshots/login.png)
