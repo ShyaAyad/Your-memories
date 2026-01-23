@@ -1,24 +1,20 @@
 const jwt = require("jsonwebtoken");
 
 const protectedRoute = (req, res, next) => {
-  // console.log("Request headers:", req.headers.cookie); 
-  // console.log("All cookies:", req.cookies);
-
   const token = req.cookies.jwt;
 
-  if (token) {
-    jwt.verify(token, "myJWT", (err, decodedToken) => {
-      if (err) {
-        console.log(err.message);
-        return res.status(401).json({ message: "Authentication required" });
-      } else {
-        console.log(decodedToken);
-        next();
-      }
-    });
-  } else {
+  if (!token) {
     return res.status(401).json({ message: "Authentication required" });
   }
+
+  jwt.verify(token, "myJWT", (err, decodedToken) => {
+    if (err) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    req.userId = decodedToken.id; // user id from the token
+    next();
+  });
 };
 
 module.exports = { protectedRoute };

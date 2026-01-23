@@ -93,9 +93,11 @@ const signUp = async (req, res) => {
 const logOut = async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
-    sameSite: "strict",
+    secure: false,
+    sameSite: "lax",
     expires: new Date(0),
   });
+
   return res.status(200).json({ message: "Logged out successfully" });
 };
 

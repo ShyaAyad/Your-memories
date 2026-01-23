@@ -30,6 +30,11 @@ const MemorySchema = mongoose.Schema({
         type: String,
         trim: true,
         required: false
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Auth', 
+        required: true
     }
 })
 

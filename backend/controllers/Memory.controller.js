@@ -22,6 +22,7 @@ const createMemory = async (req, res) => {
     const memoryData = {
       ...req.body, // getting all the data
       image: req.file?.path || "", // also the path of the image if there is one
+      owner: req.userId, // id of the user of the memory
     };
 
     if (!memoryData) {
@@ -42,28 +43,37 @@ const createMemory = async (req, res) => {
 
 const updateMemory = async (req, res) => {
   try {
-    const data = req.body;
     const { id } = req.params;
-    
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid ID format" });
     }
 
-    const objectId = new mongoose.Types.ObjectId(id);
-    const updateMemo = await Memory.findById(objectId); // finding the specific memory to be updated
+    const data = { ...req.body };
 
-    if (!updateMemo) {
+    if (req.body.tags) {
+      data.tags = JSON.parse(req.body.tags);
+    }
+
+    if (req.file) {
+      data.image = req.file.path;
+    }
+
+    const updatedMemory = await Memory.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+
+    if (!updatedMemory) {
       return res.status(404).json({ message: "No memory was found!" });
     }
 
-    const updatedMemory = await Memory.findByIdAndUpdate(objectId, data, {
-      new: true,
-    }); // update memory data
     res.status(200).json(updatedMemory);
   } catch (error) {
-    console.log("Couldn't update memroy, Try again!", error);
+    console.log("Couldn't update memory", error);
+    res.status(500).json({ message: "Update failed" });
   }
 };
+
 
 const deleteMemory = async (req, res) => {
   try {
@@ -76,6 +86,12 @@ const deleteMemory = async (req, res) => {
 
     if (!deleteMemo) {
       return res.status(404).json({ message: "No memory was found!" });
+    }
+
+    if (deleteMemo.owner.toString() !== req.userId) {
+      return res.status(403).json({
+        message: "You are not allowed to delete this memory",
+      });
     }
 
     await deleteMemo.deleteOne(); // if found, then remove it
