@@ -8,10 +8,12 @@ import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
 const Post = () => {
-  const posts = useCreatePost((state) => state.posts);
+  const post = useCreatePost((state) => state.posts);
   const getMemories = useCreatePost((state) => state.getAllMemories);
   const deleteMemory = useCreatePost((state) => state.deleteMemory);
+  const likeMemory = useCreatePost((state) => state.likeMemory);
   const user = useUserAccount((state) => state.user);
+  const isLiked = post.likes?.includes(user?._id);
   const navigate = useNavigate();
 
   // to get all the memories we already have in the database on mount
@@ -22,7 +24,7 @@ const Post = () => {
   return (
     // displaying data comming from the API here
     <div className="flex flex-col items-center mt-20 mx-7 justify-center md:grid md:grid-cols-3 md:gap-10">
-      {posts.map((post) => (
+      {post.map((post) => (
         <div
           key={post._id}
           className="w-full h-full max-w-[400px] my-10 sm:mx-5 border-gray-300 border-1 p-5 rounded-3xl bg-white"
@@ -58,9 +60,14 @@ const Post = () => {
           <Title level={3}>{post.description}</Title>
           <Title level={4}>{post.tags}</Title>
           <div>
+            <Button onClick={() => likeMemory(post._id)} disabled={!user}>
+              {isLiked ? "⭐ Starred" : "☆ Star"} ({post.likes.length})
+            </Button>
+          </div>
+          <div>
             {/* pass correct id to delete */}
-            {/* only owner of the post can delete their posts  */}
-            {user && post.owner?.toString() === user._id  ? (
+            {/* only owner of the post can delete their post  */}
+            {user && post.owner?.toString() === user._id ? (
               <Button onClick={() => deleteMemory(post._id)}>
                 Delete memory
               </Button>

@@ -26,6 +26,9 @@ export const updateAMemory = async (memoryId, data) =>
 export const deleteAMemory = async (memoryId) => 
   await api.delete(`/api/memory/${memoryId}`);
 
+export const likeMemory = async(memoryId) => 
+  await api.patch(`/api/memory/${memoryId}/like`);
+
 // Authentication endpoints
 export const signUp = async (data) => 
   await api.post("/api/auth/signup", data);
