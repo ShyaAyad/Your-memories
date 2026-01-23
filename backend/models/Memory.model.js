@@ -1,41 +1,46 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const MemorySchema = mongoose.Schema({
-    creator: {
-        type: String,
-        trim: true,
-        required: [true, 'Memory must have a creator']
-    },
-    title: {
-        type: String,
-        trim: true,
-        required: [true, 'Memory must have a title']
-    },
-    description: {
-        type: String,
-        trim: true,
-        default: ''
-    },
-    createDate: {
-        type: Date, 
-        trim: true,
-        default: Date.now // default date is now 
-    },
-    tags: {
-        type: [String], // tags can be more that one stored in an array
-        trim: true,
-        default: []
-    }, 
-    image: {
-        type: String,
-        trim: true,
-        required: false
-    },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Auth', 
-        required: true
-    }
-})
+  creator: {
+    type: String,
+    trim: true,
+    required: [true, "Memory must have a creator"],
+  },
+  title: {
+    type: String,
+    trim: true,
+    required: [true, "Memory must have a title"],
+  },
+  description: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  createDate: {
+    type: Date,
+    trim: true,
+    default: Date.now, // default date is now
+  },
+  tags: {
+    type: [String], // tags can be more that one stored in an array
+    trim: true,
+    default: [],
+  },
+  likes: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+    ref: "User",
+  },
+  image: {
+    type: String,
+    trim: true,
+    required: false,
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auth",
+    required: true,
+  },
+});
 
-module.exports = mongoose.model("Memory", MemorySchema)
+module.exports = mongoose.model("Memory", MemorySchema);

@@ -1,8 +1,7 @@
 const Memory = require("../models/Memory.model.js");
 const mongoose = require("mongoose");
 
-// mongoose methods find(), findById(), findByIdAndUpdate(), deleteOne(), remove()
-
+// get all memories
 const getMemory = async (req, res) => {
   try {
     const getMemo = await Memory.find();
@@ -17,6 +16,7 @@ const getMemory = async (req, res) => {
   }
 };
 
+// create a memory
 const createMemory = async (req, res) => {
   try {
     const memoryData = {
@@ -41,6 +41,7 @@ const createMemory = async (req, res) => {
   }
 };
 
+// update a memory
 const updateMemory = async (req, res) => {
   try {
     const { id } = req.params;
@@ -74,15 +75,13 @@ const updateMemory = async (req, res) => {
   }
 };
 
-
+// delete a memory
 const deleteMemory = async (req, res) => {
   try {
     // id comes from the frontend and we search in mongoDB collections to delete it
     const { id } = req.params;
     const objectId = new mongoose.Types.ObjectId(id); // why do this? because sometimes mongo id and the one coming from frontend mismatch (String & ObjectId)
     const deleteMemo = await Memory.findById(objectId); // find specific memory to delete
-
-    // const deleteMemo = await Memory.findByIdAndDelete(req.params.id)  // works at some cases but safer to use the above approach
 
     if (!deleteMemo) {
       return res.status(404).json({ message: "No memory was found!" });
@@ -101,9 +100,46 @@ const deleteMemory = async (req, res) => {
   }
 };
 
+// like a memory
+const likeMemory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userId;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid memory ID" });
+    }
+
+    const memory = await Memory.findById(id);
+
+    if (!memory) {
+      return res.status(404).json({ message: "Memory not found" });
+    }
+
+    const isLiked = memory.likes.includes(userId);
+
+    if (isLiked) {
+      // unlike a memory
+      memory.likes = memory.likes.filter(
+        (like) => like.toString() !== userId
+      );
+    } else {
+      // like a memory
+      memory.likes.push(userId);
+    }
+
+    await memory.save();
+    res.status(200).json(memory);
+  } catch (error) {
+    console.log("Couldn't like memory", error);
+    res.status(500).json({ message: "Like failed" });
+  }
+};
+
 module.exports = {
   getMemory,
   createMemory,
   updateMemory,
   deleteMemory,
+  likeMemory
 };
