@@ -78,19 +78,19 @@ Make sure both servers are running simultaneously.
 ![Login page](frontend/memories/screenshots/login.png)
 
 ### Register Page
-![Register page](screenshots/register.png)
+![Register page](frontend/memories/screenshots/register.png)
 
 ### Home Page
-![Home page](screenshots/home.png)
+![Home page](frontend/memories/screenshots/home.png)
 
 ### Opened Memory
-![Memory detail](screenshots/openedMemo.png)
+![Memory detail](frontend/memories/screenshots/openedMemo.png)
 
 ### Create memory form
-![Create memory page](screenshots/createMemo.png)
+![Create memory page](frontend/memories/screenshots/createMemo.png)
 
 ### Edit memory form
-![Edit memory page](screenshots/editMemo.png)
+![Edit memory page](frontend/memories/screenshots/editMemo.png)
 
 ### userInfo Page
-![UserInfo page](screenshots/userInfo.png)
+![UserInfo page](frontend/memories/screenshots/userInfo.png)
