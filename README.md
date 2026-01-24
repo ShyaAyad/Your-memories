@@ -75,7 +75,7 @@ Make sure both servers are running simultaneously.
 
 ## 📸 Screenshots
 ### Login Page
-![Login page](screenshots/login.png)
+![Login page](frontend/memories/screenshots/login.png)
 
 ### Register Page
 ![Register page](screenshots/register.png)
