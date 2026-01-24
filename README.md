@@ -76,3 +76,21 @@ Make sure both servers are running simultaneously.
 ## 📸 Screenshots
 ### Login Page
 ![Login page](screenshots/login.png)
+
+### Register Page
+![Register page](screenshots/register.png)
+
+### Home Page
+![Home page](screenshots/home.png)
+
+### Opened Memory
+![Memory detail](screenshots/openedMemo.png)
+
+### Create memory form
+![Create memory page](screenshots/createMemo.png)
+
+### Edit memory form
+![Edit memory page](screenshots/editMemo.png)
+
+### userInfo Page
+![UserInfo page](screenshots/userInfo.png)
